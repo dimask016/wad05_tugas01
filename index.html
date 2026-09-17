@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Security: Content Security Policy untuk mencegah eksekusi script tidak dikenal -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self';">
+    <title>Secure Live Search</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="search-container">
+        <h2>Live Search User List (Secure)</h2>
+        
+        <!-- Security: Hardening atribut input -->
+        <input 
+            type="text" 
+            id="search-input" 
+            placeholder="Cari nama pengguna..." 
+            autocomplete="off" 
+            autocorrect="off"
+            spellcheck="false"
+            maxlength="50" 
+            aria-label="Cari pengguna"
+        >
+        
+        <!-- Security/Accessibility: aria-live untuk mengabarkan perubahan secara aman -->
+        <ul id="user-list" aria-live="polite"></ul>
+    </div>
+    <script src="script.js" defer></script>
+</body>
+</html>

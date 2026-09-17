@@ -1,0 +1,64 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f7f6;
+    display: flex;
+    justify-content: center;
+    padding-top: 50px;
+}
+
+.search-container {
+    background: #ffffff;
+    padding: 20px 25px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+}
+
+.search-container h2 {
+    font-size: 1.25rem;
+    color: #0B4F6C;
+    margin-bottom: 15px;
+}
+
+#search-input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    margin-bottom: 15px;
+    outline: none;
+}
+
+#search-input:focus {
+    border-color: #0B4F6C;
+}
+
+#user-list {
+    list-style: none;
+}
+
+#user-list li {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    color: #333;
+    /* Security UI: Mencegah teks panjang/malicious string merusak layout */
+    word-break: break-word;
+    overflow-wrap: break-word;
+}
+
+#user-list li:last-child {
+    border-bottom: none;
+}
+
+#user-list li.no-result {
+    color: #888;
+    font-style: italic;
+}
