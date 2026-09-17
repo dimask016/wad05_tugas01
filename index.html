@@ -3,100 +3,223 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Security: Content Security Policy untuk mencegah eksekusi script tidak dikenal -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:;">
+
+    <!-- ============================================================
+         SECURITY HEADERS (via meta) — sebisa mungkin di-hardening
+         ============================================================ -->
+
+    <!-- CSP super ketat: tidak ada resource eksternal, tidak ada inline, tidak ada eval -->
+    <meta http-equiv="Content-Security-Policy" content="
+        default-src 'none';
+        script-src 'self';
+        style-src 'self';
+        img-src 'self' data:;
+        font-src 'self';
+        connect-src 'none';
+        media-src 'none';
+        object-src 'none';
+        frame-src 'none';
+        frame-ancestors 'none';
+        base-uri 'none';
+        form-action 'none';
+        manifest-src 'none';
+        worker-src 'none';
+        upgrade-insecure-requests;
+        block-all-mixed-content;
+    ">
+
+    <!-- Cegah kebocoran referrer ke situs eksternal -->
+    <meta name="referrer" content="no-referrer">
+
+    <!-- Hardening MIME sniffing (dihormati sebagian browser) -->
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+
+    <!-- Cegah framing / clickjacking (fallback bila CSP tak didukung) -->
+    <meta http-equiv="X-Frame-Options" content="DENY">
+
+    <!-- Cegah XSS legacy filter memicu bug -->
+    <meta http-equiv="X-XSS-Protection" content="0">
+
+    <!-- Batasi fitur browser yang tidak dibutuhkan -->
+    <meta http-equiv="Permissions-Policy" content="
+        camera=(),
+        microphone=(),
+        geolocation=(),
+        payment=(),
+        usb=(),
+        accelerometer=(),
+        gyroscope=(),
+        magnetometer=(),
+        autoplay=(),
+        encrypted-media=(),
+        picture-in-picture=(),
+        display-capture=()
+    ">
+
+    <meta name="color-scheme" content="dark">
+    <meta name="robots" content="noindex, nofollow, noarchive">
     <title>Secure Live Search — Dimas Kurniawan</title>
+
+    <!-- Subresource Integrity untuk stylesheet lokal (opsional) -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- ===== Latar animasi dekoratif (murni visual, tanpa interaksi) ===== -->
-    <div class="bg-decor" aria-hidden="true">
-        <span class="blob blob-1"></span>
-        <span class="blob blob-2"></span>
-        <span class="blob blob-3"></span>
-        <span class="blob blob-4"></span>
-        <span class="grid-overlay"></span>
-    </div>
+    <!-- Ornamen background bergerak (aria-hidden = tidak dibaca screen reader) -->
+    <div class="orb a" aria-hidden="true"></div>
+    <div class="orb b" aria-hidden="true"></div>
+    <div class="orb c" aria-hidden="true"></div>
 
-    <main class="main-wrapper">
+    <main class="app">
 
-        <!-- ===== Header Identitas ===== -->
-        <header class="header-info">
-            <div class="avatar" aria-hidden="true">DK</div>
-
-            <div class="identity">
-                <h1>Detail Tugas &amp; Identitas</h1>
-                <ul class="id-list">
-                    <li><strong>Nama</strong><span>Dimas Kurniawan</span></li>
-                    <li><strong>NIM</strong><span>25120300016</span></li>
-                    <li><strong>Matkul</strong><span>Web Application Development (WAD05)</span></li>
-                    <li><strong>Dosen</strong><span>Wahyu Ari Bowo</span></li>
-                </ul>
-            </div>
-
-            <button type="button" id="theme-toggle" class="theme-toggle"
-                    aria-label="Aktifkan tema gelap" aria-pressed="false">🌙</button>
+        <!-- ================= IDENTITAS ================= -->
+        <header class="card header-info">
+            <h1>Detail Tugas &amp; Identitas</h1>
+            <ul class="id-grid">
+                <li><span>Nama</span><strong>Dimas Kurniawan</strong></li>
+                <li><span>NIM</span><strong>25120300016</strong></li>
+                <li><span>Mata Kuliah</span><strong>Web Application Development (WAD05)</strong></li>
+                <li><span>Dosen</span><strong>Wahyu Ari Bowo</strong></li>
+            </ul>
         </header>
 
-        <!-- ===== Lampiran File ===== -->
-        <section class="attachment-section">
-            <h3>Lampiran File</h3>
-            <div class="attachment-card">
-                <span class="file-icon" aria-hidden="true">📄</span>
-                <span class="file-name">Tugas_WAD05_16092026.docx</span>
-                <a href="Tugas_WAD05_16092026.docx" download class="download-btn">
-                    Unduh <span aria-hidden="true">↓</span>
-                </a>
-            </div>
-        </section>
+        <!-- ================= LIVE SEARCH ================= -->
+        <section class="card search-card">
+            <h2>Live Search Pengguna</h2>
+            <p class="subtitle">
+                Real-time filter · <code>input</code> + <code>Array.filter()</code> + re-render DOM
+                (100% <code>createElement</code> &amp; <code>textContent</code> — tanpa <code>innerHTML</code>)
+            </p>
 
-        <!-- ===== Live Search ===== -->
-        <section class="search-container">
-            <div class="search-head">
-                <h2>Live Search <span class="badge">Secure</span></h2>
-                <span class="counter" id="result-count" aria-hidden="true">0 hasil</span>
-            </div>
-
-            <div class="input-wrapper">
+            <div class="input-wrap">
                 <span class="search-icon" aria-hidden="true">🔍</span>
+
+                <!-- Hardening input:
+                     - maxlength  : batas atas panjang
+                     - minlength  : tidak ada (boleh kosong)
+                     - pattern    : whitelist karakter (huruf, angka, spasi, tanda umum)
+                     - inputmode  : paksa keyboard teks
+                     - autocomplete off + list="none"
+                     - aria-*     : aksesibilitas
+                -->
                 <input
                     type="text"
                     id="search-input"
-                    placeholder="Cari nama pengguna..."
+                    name="q"
+                    placeholder="Cari nama atau peran..."
                     autocomplete="off"
                     autocorrect="off"
+                    autocapitalize="off"
                     spellcheck="false"
                     maxlength="50"
+                    minlength="0"
+                    inputmode="text"
+                    enterkeyhint="search"
+                    pattern="[A-Za-z0-9 _\-\.\u00C0-\u024F]{0,50}"
+                    title="Hanya huruf, angka, spasi, dan tanda . _ - (maks 50 karakter)"
                     aria-label="Cari pengguna"
-                    role="combobox"
-                    aria-expanded="true"
                     aria-controls="user-list"
                     aria-autocomplete="list"
+                    aria-haspopup="listbox"
                 >
-                <button type="button" id="clear-btn" class="clear-btn"
-                        aria-label="Bersihkan pencarian">✕</button>
+                <button type="button" id="clear-btn" class="clear-btn" aria-label="Bersihkan pencarian">✕</button>
             </div>
 
-            <!-- Quick filter huruf awal (dibuat aman via DOM API) -->
-            <div class="chips" id="chips" role="group" aria-label="Filter huruf awal"></div>
+            <!-- Saran kata kunci -->
+            <div class="chips" id="chips" role="group" aria-label="Saran pencarian"></div>
 
-            <ul id="user-list" role="listbox" aria-label="Daftar pengguna"></ul>
+            <div class="meta-row">
+                <span id="result-count" class="count" aria-live="polite"></span>
+                <span id="query-hint" class="hint"></span>
+            </div>
 
-            <!-- Pengumuman hasil untuk screen reader -->
-            <p class="sr-only" id="sr-status" role="status" aria-live="polite"></p>
-
-            <p class="hint">
-                <span><kbd>↑</kbd><kbd>↓</kbd> navigasi</span>
-                <span><kbd>Enter</kbd> pilih</span>
-                <span><kbd>Esc</kbd> reset</span>
-            </p>
+            <!-- role="listbox" agar screen reader paham struktur hasil -->
+            <ul id="user-list" role="listbox" aria-live="polite" aria-label="Hasil pencarian pengguna"></ul>
         </section>
 
+        <!-- ============================================================
+             LAMPIRAN & DOKUMENTASI (BARU)
+             Semua tautan bersifat same-origin (lokal) sehingga tetap
+             patuh pada CSP: default-src 'none' (navigasi tidak dibatasi CSP).
+             rel="noopener noreferrer" mencegah tabnabbing & kebocoran referrer.
+             ============================================================ -->
+        <section class="card attachment-section" aria-labelledby="lampiran-title">
+            <h2 id="lampiran-title" class="card-title">Lampiran &amp; Dokumentasi</h2>
+            <p class="subtitle">
+                Berkas penjelasan kode dan dokumen tugas. Seluruh tautan
+                bersifat lokal (<code>same-origin</code>) — tidak ada resource eksternal.
+            </p>
+
+            <!-- ---------- Penjelasan Kode ---------- -->
+            <h3 class="section-label">Penjelasan Kode</h3>
+            <ul class="id-grid link-grid">
+                <li>
+                    <span class="link-label">
+                        <span class="link-icon" aria-hidden="true">📄</span>
+                        Struktur &amp; Markup HTML
+                    </span>
+                    <a
+                        class="chip"
+                        href="penjelasan_index.html"
+                        rel="noopener noreferrer"
+                        title="Buka penjelasan_index.html"
+                    >penjelasan_index.html</a>
+                </li>
+                <li>
+                    <span class="link-label">
+                        <span class="link-icon" aria-hidden="true">🎨</span>
+                        Styling &amp; Animasi CSS
+                    </span>
+                    <a
+                        class="chip"
+                        href="penjelasan_style.html"
+                        rel="noopener noreferrer"
+                        title="Buka penjelasan_style.html"
+                    >penjelasan_style.html</a>
+                </li>
+                <li>
+                    <span class="link-label">
+                        <span class="link-icon" aria-hidden="true">⚙️</span>
+                        Logika Live Search (JS)
+                    </span>
+                    <a
+                        class="chip"
+                        href="penjelasan_script.html"
+                        rel="noopener noreferrer"
+                        title="Buka penjelasan_script.html"
+                    >penjelasan_script.html</a>
+                </li>
+            </ul>
+
+            <!-- ---------- Unduhan Dokumen Tugas ---------- -->
+            <h3 class="section-label">Berkas Tugas</h3>
+            <div class="download-row">
+                <span class="file-badge" aria-hidden="true">📥</span>
+                <div class="file-meta">
+                    <span class="file-name">Tugas_WAD05_16092026.docx</span>
+                    <span class="file-type">Microsoft Word Document</span>
+                </div>
+                <a
+                    class="chip chip-download"
+                    href="Tugas_WAD05_16092026.docx"
+                    download="Tugas_WAD05_16092026.docx"
+                    type="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                    rel="noopener noreferrer"
+                    title="Unduh Tugas_WAD05_16092026.docx"
+                >Unduh</a>
+            </div>
+        </section>
     </main>
 
-    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <!-- Toast notifikasi -->
+    <div id="toast" class="toast" role="status" aria-live="polite" aria-atomic="true"></div>
 
-    <script src="script.js" defer></script>
+    <!-- Script lokal dengan referrerpolicy + crossorigin (hardening) -->
+    <script
+        src="script.js"
+        defer
+        referrerpolicy="no-referrer"
+        crossorigin="anonymous"
+    ></script>
 </body>
 </html>

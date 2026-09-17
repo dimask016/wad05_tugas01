@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy"
+      content="default-src 'none'; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none';">
+<meta name="referrer" content="no-referrer">
+<title>Audit Baris — script.js</title>
+<style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+        font-family: "Segoe UI", system-ui, -apple-system, Arial, sans-serif;
+        background: #071622; color: #eaf6fb; line-height: 1.55;
+        padding: 32px 18px 80px;
+    }
+    .wrap { max-width: 1320px; margin: 0 auto; }
+    header.page-head {
+        margin-bottom: 22px; padding: 22px 24px;
+        background: rgba(255,255,255,.045);
+        border: 1px solid rgba(255,255,255,.12);
+        border-radius: 16px;
+    }
+    header.page-head h1 { font-size: 1.35rem; margin-bottom: 6px; color: #fff; }
+    header.page-head p  { color: #9db4c0; font-size: .88rem; }
+    .legend { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0 22px; }
+    .legend span {
+        font-size: .72rem; padding: 5px 12px; border-radius: 999px;
+        border: 1px solid rgba(56,189,248,.4);
+        background: rgba(56,189,248,.1); color: #38bdf8;
+    }
+    table {
+        width: 100%; border-collapse: collapse;
+        background: rgba(255,255,255,.03);
+        border: 1px solid rgba(255,255,255,.1);
+        border-radius: 14px; overflow: hidden;
+        font-size: .84rem;
+    }
+    thead th {
+        background: linear-gradient(135deg, #0B4F6C, #103a52);
+        color: #fff; text-align: left; padding: 12px 14px;
+        font-size: .76rem; letter-spacing: .05em;
+        text-transform: uppercase;
+        border-bottom: 1px solid rgba(255,255,255,.15);
+        position: sticky; top: 0; z-index: 5;
+    }
+    thead th:nth-child(1) { width: 62px; text-align: center; }
+    thead th:nth-child(2) { width: 30%; }
+    thead th:nth-child(4) { width: 14%; }
+    tbody tr { border-bottom: 1px solid rgba(255,255,255,.06); transition: background .18s; }
+    tbody tr:hover { background: rgba(56,189,248,.07); }
+    tbody tr:last-child { border-bottom: none; }
+    tbody td { padding: 11px 14px; vertical-align: top; }
+    tbody td:first-child {
+        text-align: center; color: #38bdf8; font-weight: 700;
+        font-variant-numeric: tabular-nums;
+        background: rgba(56,189,248,.05);
+    }
+    tbody td:nth-child(4) {
+        color: #fbbf24; font-weight: 600;
+        font-variant-numeric: tabular-nums;
+        font-size: .8rem;
+        border-left: 1px dashed rgba(251,191,36,.2);
+    }
+    code {
+        font-family: "Fira Code", "Consolas", "Courier New", monospace;
+        font-size: .78rem; color: #f1f7fa;
+        background: rgba(0,0,0,.35); padding: 2px 6px;
+        border-radius: 5px; white-space: pre-wrap;
+        word-break: break-word; display: inline-block;
+        max-width: 100%;
+    }
+    td.desc { color: #cfe3ec; font-size: .83rem; }
+    td.desc b { color: #fff; }
+    td.desc .sec {
+        display: inline-block; font-size: .66rem; padding: 2px 9px;
+        margin-right: 6px; border-radius: 999px;
+        background: rgba(34,211,238,.16); color: #67e8f9;
+        font-weight: 600; letter-spacing: .03em;
+    }
+    td.desc .sec.warn { background: rgba(248,113,113,.16); color: #fca5a5; }
+    td.desc .sec.ok   { background: rgba(74,222,128,.16);  color: #86efac; }
+    .section-row td {
+        background: linear-gradient(90deg, rgba(56,189,248,.22), rgba(56,189,248,.04));
+        color: #fff; font-weight: 700; font-size: .78rem;
+        letter-spacing: .07em; text-transform: uppercase;
+        padding: 9px 14px;
+    }
+    footer.page-foot {
+        margin-top: 30px; padding: 18px 22px;
+        background: rgba(255,255,255,.04);
+        border: 1px solid rgba(255,255,255,.1);
+        border-radius: 14px; color: #9db4c0;
+        font-size: .82rem; text-align: center;
+    }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+    <header class="page-head">
+        <h1>🔐 Audit Baris — <code style="font-size:.95rem;">script.js</code></h1>
+        <p>Tabel audit keamanan per baris &amp; pemetaan ke baris di <code>index.html</code>
+           (Secure Live Search · Dimas Kurniawan · WAD05).</p>
+    </header>
+
+    <div class="legend">
+        <span>🛡️ XSS Mitigation</span>
+        <span>🧱 DoS / Rate-Limit</span>
+        <span>🔒 Immutability</span>
+        <span>🧩 DOM Clobbering Guard</span>
+        <span>⚙️ Error Boundary</span>
+        <span>♿ Aksesibilitas</span>
+        <span>🎨 UI / Animation</span>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>No Baris</th>
+                <th>Baris Kode JavaScript</th>
+                <th>Penjelasan &amp; Aspek Security</th>
+                <th>Implementasi di index.html</th>
+            </tr>
+        </thead>
+        <tbody>
+
+        <tr class="section-row"><td colspan="4">§ Blok Pembuka — Isolasi Scope</td></tr>
+
+        <tr>
+            <td>1</td>
+            <td><code>(function () {</code></td>
+            <td class="desc"><span class="sec">🔒 Isolation</span>IIFE — semua variabel privat, tidak bocor ke <code>window</code>. Skrip pihak ketiga tidak bisa membaca/mengubah state.</td>
+            <td>Dipanggil oleh <code>&lt;script src="script.js" defer&gt;</code> di baris <b>145–150</b></td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td><code>"use strict";</code></td>
+            <td class="desc"><span class="sec">🔒 Strict Mode</span>Melarang assignment implisit, <code>with</code>, duplikat parameter — mengurangi silent failure.</td>
+            <td>—</td>
+        </tr>
+
+        <tr class="section-row"><td colspan="4">§ 0. Konstanta Keamanan</td></tr>
+
+        <tr>
+            <td>7</td>
+            <td><code>const MAX_INPUT_LENGTH = 50;</code></td>
+            <td class="desc"><span class="sec">🧱 DoS</span>Hard cap panjang input — pertahanan kedua setelah <code>maxlength</code> HTML.</td>
+            <td>Melengkapi atribut <code>maxlength="50"</code> di baris <b>114</b></td>
+        </tr>
+        <tr>
+            <td>8</td>
+            <td><code>const MAX_RESULTS = 200;</code></td>
+            <td class="desc"><span class="sec">🧱 DoS</span>Batas jumlah item dirender — cegah browser freeze bila data masif.</td>
+            <td>Mengatur jumlah <code>&lt;li&gt;</code> di dalam <code>&lt;ul id="user-list"&gt;</code> baris <b>137</b></td>
+        </tr>
+        <tr>
+            <td>9</td>
+            <td><code>const DEBOUNCE_MS = 90;</code></td>
+            <td class="desc"><span class="sec">🧱 DoS</span>Debounce event <code>input</code> saat user mengetik cepat.</td>
+            <td>Listener <code>input</code> menempel di <code>&lt;input id="search-input"&gt;</code> baris <b>105–124</b></td>
+        </tr>
+        <tr>
+            <td>10</td>
+            <td><code>const RATE_LIMIT_MS = 30;</code></td>
+            <td class="desc"><span class="sec">🧱 DoS</span>Rate limit antar-render — lapis kedua setelah debounce.</td>
+            <td>Idem — pada <code>#search-input</code></td>
+        </tr>
+        <tr>
+            <td>11</td>
+            <td><code>const TOAST_DURATION = 2200;</code></td>
+            <td class="desc"><span class="sec">🎨 UI</span>Durasi toast dipusatkan sebagai konstanta (menghindari magic number).</td>
+            <td>Toast ditarget ke <code>&lt;div id="toast"&gt;</code> baris <b>142</b></td>
+        </tr>
+        <tr>
+            <td>12</td>
+            <td><code>const SAFE_PATTERN = /^[A-Za-z0-9 _\-.\u00C0-\u024F]*$/;</code></td>
+            <td class="desc"><span class="sec warn">🛡️ Whitelist</span>Allow-list karakter — menolak tag, emoji jahat, dan Unicode berbahaya.</td>
+            <td>Melengkapi atribut <code>pattern</code> di input baris <b>118</b></td>
+        </tr>
+
+        <tr class="section-row"><td colspan="4">§ 1. Data — Deep Freeze</td></tr>
+
+        <tr>
+            <td>17</td>
+            <td><code>const USERS = Object.freeze(</code></td>
+            <td class="desc"><span class="sec">🔒 Immutability</span>Array dibekukan — tidak bisa <code>push/splice/reassign</code>.</td>
+            <td>Digunakan sebagai sumber list pada <code>&lt;ul id="user-list"&gt;</code> baris <b>137</b></td>
+        </tr>
+        <tr>
+            <td>18–30</td>
+            <td><code>[ { name:"...", role:"..." }, ... ]</code></td>
+            <td class="desc">Data hardcode — tidak ada jalur injeksi dari server/DOM.</td>
+            <td>—</td>
+        </tr>
+        <tr>
+            <td>31–37</td>
+            <td><code>.map(u =&gt; Object.freeze({<br>&nbsp;&nbsp;name: String(u.name),<br>&nbsp;&nbsp;role: String(u.role)<br>}))</code></td>
+            <td class="desc"><span class="sec">🔒 Immutability + 🛡️ Type Coercion</span><b>Deep freeze</b> tiap objek + paksa <code>String()</code>.</td>
+            <td>Nilai <code>name</code> tampil di <code>.user-name</code> (baris <b>137</b> render). Nilai <code>role</code> di <code>.user-role</code>.</td>
+        </tr>
+        <tr>
+            <td>39–41</td>
+            <td><code>const SUGGESTIONS = Object.freeze(["Engineer", ...].map(String));</code></td>
+            <td class="desc"><span class="sec">🔒 Immutability</span>Chip saran beku &amp; ternormalisasi.</td>
+            <td>Dirender ke <code>&lt;div class="chips" id="chips"&gt;</code> baris <b>129</b></td>
+        </tr>
+
+        <tr class="section-row"><td colspan="4">§ 2. Helper — Hardened</td></tr>
+
+        <tr>
+            <td>48–50</td>
+            <td><code>function isString(v) { return typeof v === "string"; }</code></td>
+            <td class="desc"><span class="sec">🛡️ Type Guard</span>Hanya terima string primitif — <code>new String()</code> ditolak.</td>
+            <td>—</td>
+        </tr>
+        <tr>
+            <td>52–67</td>
+            <td><code>function sanitizeInput(raw) { ... }</code></td>
+            <td class="desc"><span class="sec warn">🛡️ Sanitizer</span>Type-check → cap panjang pra-trim → trim → buang karakter kontrol → whitelist → cap final.</td>
+            <td>Menyalin nilai dari <code>&lt;input id="search-input"&gt;</code> baris <b>105–124</b></td>
+        </tr>
+        <tr>
+            <td>70–78</td>
+            <td><code>function initialsOf(name) { ... }</code></td>
+            <td class="desc"><span class="sec">🛡️ Defensive</span>Return <code>"?"</code> bila kosong — cegah <code>charAt</code> pada <code>undefined</code>.</td>
+            <td>Mengisi teks avatar di dalam <code>.avatar</code> (render di <code>#user-list</code> baris <b>137</b>)</td>
+        </tr>
+        <tr>
+            <td>80–88</td>
+            <td><code>function hueOf(text) { ... }</code></td>
+            <td class="desc"><span class="sec">🎨 UI</span>Loop dibatasi 64 iterasi — cegah DoS string panjang.</td>
+            <td>Hasil jadi CSS var <code>--hue</code> pada avatar di <code>#user-list</code> baris <b>137</b></td>
+        </tr>
+        <tr>
+            <td>90–129</td>
+            <td><code>function buildHighlightedText(text, keyword) { ... }</code></td>
+            <td class="desc"><span class="sec warn">🛡️ Anti-XSS</span>Highlight dibangun via <code>DocumentFragment</code> + <code>createElement</code> + <code>textContent</code> + <code>createTextNode</code>. <b>Tanpa <code>innerHTML</code>.</b> Loop dibatasi <code>guard &lt; 64</code>.</td>
+            <td>Dipakai untuk mengisi <code>.user-name</code> pada setiap <code>&lt;li class="user-item"&gt;</code> di dalam <code>#user-list</code> baris <b>137</b></td>
+        </tr>
+        <tr>
+            <td>132–141</td>
+            <td><code>function showToast(message) { ... }</code></td>
+            <td class="desc"><span class="sec ok">✅ Anti-XSS</span>Toast via <code>textContent</code>. Timer di-null setelah clear.</td>
+            <td>Toast element di baris <b>142</b> (<code>&lt;div id="toast"&gt;</code>)</td>
+        </tr>
+        <tr>
+            <td>143–152</td>
+            <td><code>function safeRun(label, fn) { ... }</code></td>
+            <td class="desc"><span class="sec">⚙️ Error Boundary</span>Wrapper try/catch — hanya log <code>err.name</code>, bukan stack (cegah info leak).</td>
+            <td>—</td>
+        </tr>
+        <tr>
+            <td>154–159</td>
+            <td><code>function getEl(id, expectedTag) { ... }</code></td>
+            <td class="desc"><span class="sec">🧩 DOM Clobbering Guard</span>Verifikasi <code>tagName</code> — cegah penyerang menyisipkan <code>&lt;form id="user-list"&gt;</code>.</td>
+            <td>Memeriksa tag dari: <code>#search-input</code> (b.105), <code>#user-list</code> (b.137), <code>#clear-btn</code> (b.125), <code>#result-count</code> (b.132), <code>#query-hint</code> (b.133), <code>#chips</code> (b.129), <code>#toast</code> (b.142)</td>
+        </tr>
+        <tr>
+            <td>161–167</td>
+            <td><code>const searchInput = getEl("search-input", "INPUT");<br>...dst</code></td>
+            <td class="desc"><span class="sec">🧩 DOM Guard</span>Referensi DOM di-<code>const</code> — tidak bisa ditimpa.</td>
+            <td>Mengambil: <code>#search-input</code> (b.107), <code>#user-list</code> (b.137), <code>#clear-btn</code> (b.125), <code>#result-count</code> (b.132), <code>#query-hint</code> (b.133), <code>#chips</code> (b.129), <code>#toast</code> (b.142)</td>
+        </tr>
+        <tr>
+            <td>169–174</td>
+            <td><code>if (!searchInput || ...) { console.error(...); return; }</code></td>
+            <td class="desc"><span class="sec">⚙️ Fail-Safe</span>Bila elemen wajib hilang, skrip berhenti — cegah <code>TypeError</code> eksploitatif.</td>
+            <td>—</td>
+        </tr>
+
+        <tr class="section-row"><td colspan="4">§ 3. State Privat (di Closure)</td></tr>
+
+        <tr>
+            <td>176–179</td>
+            <td><code>let activeIndex = -1;<br>let toastTimer = null;<br>let debounceTimer = null;<br>let lastRenderTs = 0;</code></td>
+            <td class="desc"><span class="sec">🔒 Isolation</span>State privat — tidak diekspos ke <code>window</code>.</td>
+            <td>—</td>
+        </tr>
+
+        <tr class="section-row"><td colspan="4">§ 4. Render List</td></tr>
+
+        <tr>
+            <td>181–186</td>
+            <td><code>function removeAllChildren(node) { while (node.firstChild) node.removeChild(...); }</code></td>
+            <td class="desc"><span class="sec ok">✅ Anti-XSS</span>Cara aman mengosongkan list — <b>bukan</b> <code>innerHTML = ""</code>.</td>
+            <td>Mengosongkan <code>&lt;ul id="user-list"&gt;</code> di baris <b>137</b></td>
+        </tr>
+        <tr>
+            <td>188–218</td>
+            <td><code>function renderList(items, keyword) { ...empty state... }</code></td>
+            <td class="desc"><span class="sec">♿ A11y + ✅ Safe DOM</span>Empty-state dengan <code>role="option"</code>, <code>aria-disabled</code>; semua via <code>createElement</code> + <code>textContent</code>.</td>
+            <td>Target render: <code>&lt;ul id="user-list" aria-live="polite"&gt;</code> baris <b>137</b></td>
+        </tr>
+        <tr>
+            <td>221–229</td>
+            <td><code>safeItems.forEach(...);<br>const li = document.createElement("li");<br>li.setAttribute("role","option"); ...</code></td>
+            <td class="desc"><span class="sec">♿ A11y</span>Setiap item = <code>li[role=option]</code> + <code>tabIndex=0</code> + <code>aria-selected</code>.</td>
+            <td>Dirender ke <code>&lt;ul id="user-list" role="listbox"&gt;</code> baris <b>137</b></td>
+        </tr>
+        <tr>
+            <td>231–235</td>
+            <td><code>avatar.style.setProperty("--hue", String(hueOf(user.name)));<br>avatar.textContent = initialsOf(user.name);</code></td>
+            <td class="desc"><span class="sec">🛡️ Safe CSS Injection</span>CSS var di-set via <code>setProperty</code> + <code>String()</code>. Nilai 0–359, tidak injektif.</td>
+            <td>Avatar dibaca oleh CSS <code>.avatar</code> (style.css)</td>
+        </tr>
+        <tr>
+            <td>237–252</td>
+            <td><code>nameEl.appendChild(buildHighlightedText(...));<br>roleEl.textContent = user.role;</code></td>
+            <td class="desc"><span class="sec ok">✅ Anti-XSS</span>Nama lewat highlight aman, role via <code>textContent</code>.</td>
+            <td>Dirender ke <code>.user-info</code> di dalam <code>#user-list</code> baris <b>137</b></td>
+        </tr>
+        <tr>
+            <td>254–263</td>
+            <td><code>li.addEventListener("click", ...);<br>li.addEventListener("keydown", ...);</code></td>
+            <td class="desc"><span class="sec">♿ A11y</span>Klik + Enter + Space untuk pilih item.</td>
+            <td>Item <code>li</code> hidup di dalam <code>#user-list</code> baris <b>137</b></td>
+        </tr>
+
+        <tr class="section-row"><td colspan="4">§ 5. Status / Counter</td></tr>
+
+        <tr>
+            <td>269–271</td>
+            <td><code>countEl.textContent = "Menampilkan " + safeCount + ...;</code></td>
+            <td class="desc"><span class="sec">🛡️ Type Guard</span>Validasi <code>Number.isInteger</code> + <code>textContent</code>.</td>
+            <td>Target: <code>&lt;span id="result-count" aria-live="polite"&gt;</code> baris <b>132</b></td>
+        </tr>
+        <tr>
+            <td>277–279</td>
+            <td><code>hintEl.textContent = keyword ? ... : ...;</code></td>
+            <td class="desc"><span class="sec warn">🛡️ Anti-XSS</span>Keyword ditampilkan via <code>textContent</code> + <code>slice</code> cap.</td>
+            <td>Target: <code>&lt;span id="query-hint"&gt;</code> baris <b>133</b></td>
+        </tr>
+
+        <tr class="section-row"><td colspan="4">§ 6. Aksi Pilih User</td></tr>
+
+        <tr>
+            <td>282–287</td>
+            <td><code>function selectUser(name, itemEl) { ... showToast(...) }</code></td>
+            <td class="desc"><span class="sec ok">✅ Anti-XSS</span>Type-check <code>HTMLElement</code> + toast via <code>textContent</code>.</td>
+            <td>Toast muncul di <code>&lt;div id="toast"&gt;</code> baris <b>142</b></td>
+        </tr>
+
+        <tr class="section-row"><td colspan="4">§ 7. Pencarian & Throttle</td></tr>
+
+        <tr>
+            <td>290–305</td>
+            <td><code>function performSearch(rawValue) {<br>&nbsp;&nbsp;const cleanInput = sanitizeInput(rawValue);<br>&nbsp;&nbsp;const filtered = USERS.filter(...);<br>&nbsp;&nbsp;renderList(filtered, keyword);<br>}</code></td>
+            <td class="desc"><span class="sec warn">🛡️ Core Sanitizer + Array.filter</span>Titik masuk semua pencarian. Sanitasi → lowercase → <code>filter</code> → render.</td>
+            <td>Dipicu oleh input di <code>#search-input</code> baris <b>105–124</b>; hasil ke <code>#user-list</code> baris <b>137</b></td>
+        </tr>
+        <tr>
+            <td>307–327</td>
+            <td><code>function throttledSearch(...) { ... }<br>function debouncedSearch(...) { ... }</code></td>
+            <td class="desc"><span class="sec">🧱 DoS</span>Rate limit + debounce berlapis. Semua operasi via <code>safeRun</code>.</td>
+            <td>Event <code>input</code> terpasang pada <code>&lt;input id="search-input"&gt;</code> baris <b>105</b></td>
+        </tr>
+
+        <tr class="section-row"><td colspan="4">§ 8. Navigasi Keyboard</td></tr>
+
+        <tr>
+            <td>329–343</td>
+            <td><code>function moveActive(delta) { ... }</code></td>
+            <td class="desc"><span class="sec">♿ A11y + 🛡️ Guard</span>Modulo wrap-around + guard <code>items[activeIndex]</code>.</td>
+            <td>Beroperasi pada <code>&lt;li class="user-item"&gt;</code> di dalam <code>#user-list</code> baris <b>137</b></td>
+        </tr>
+
+        <tr class="section-row"><td colspan="4">§ 9. Event Listener</td></tr>
+
+        <tr>
+            <td>346–356</td>
+            <td><code>searchInput.addEventListener("input", ...);</code></td>
+            <td class="desc"><span class="sec">🛡️ Defensive</span>Null-check <code>event.target.value</code>; cap panjang kedua di DOM.</td>
+            <td>Terpasang pada <code>&lt;input id="search-input" ... maxlength="50"&gt;</code> baris <b>105–124</b></td>
+        </tr>
+        <tr>
+            <td>358–381</td>
+            <td><code>searchInput.addEventListener("keydown", ...);</code></td>
+            <td class="desc"><span class="sec">♿ A11y + ⚙️ Error Boundary</span>ArrowUp/Down/Enter/Escape dengan <code>safeRun</code>.</td>
+            <td>Terpasang pada <code>#search-input</code> baris <b>105</b></td>
+        </tr>
+        <tr>
+            <td>384–388</td>
+            <td><code>clearBtn.addEventListener("click", ...);</code></td>
+            <td class="desc">Handler tombol clear via <code>safeRun</code>.</td>
+            <td>Terpasang pada <code>&lt;button id="clear-btn"&gt;</code> baris <b>125</b></td>
+        </tr>
+
+        <tr class="section-row"><td colspan="4">§ 10. Chips Saran</td></tr>
+
+        <tr>
+            <td>390–402</td>
+            <td><code>SUGGESTIONS.forEach(function (word) {<br>&nbsp;&nbsp;const chip = document.createElement("button");<br>&nbsp;&nbsp;chip.type = "button";<br>&nbsp;&nbsp;chip.textContent = word;<br>&nbsp;&nbsp;chipsEl.appendChild(chip);<br>});</code></td>
+            <td class="desc"><span class="sec ok">✅ Safe DOM</span>Chip via <code>createElement</code>, <code>type="button"</code> cegah form-submit, teks via <code>textContent</code>.</td>
+            <td>Dirender ke <code>&lt;div class="chips" id="chips"&gt;</code> baris <b>129</b></td>
+        </tr>
+
+        <tr class="section-row"><td colspan="4">§ 11. Init &amp; Global Error Boundary</td></tr>
+
+        <tr>
+            <td>405–408</td>
+            <td><code>safeRun("init", function () {<br>&nbsp;&nbsp;renderList(USERS, "");<br>&nbsp;&nbsp;updateStatus(USERS.length, "");<br>});</code></td>
+            <td class="desc"><span class="sec">⚙️ Fail-Safe</span>Render awal dibungkus <code>safeRun</code>.</td>
+            <td>Render awal ke <code>#user-list</code> baris <b>137</b> &amp; <code>#result-count</code> baris <b>132</b></td>
+        </tr>
+        <tr>
+            <td>410–420</td>
+            <td><code>window.addEventListener("error", ...);<br>window.addEventListener("unhandledrejection", ...);</code></td>
+            <td class="desc"><span class="sec warn">🔒 Info Leak</span><code>preventDefault()</code> — cegah stack trace bocor ke console publik.</td>
+            <td>—</td>
+        </tr>
+        <tr>
+            <td>421</td>
+            <td><code>})();</code></td>
+            <td class="desc">Penutup IIFE — scope bersih kembali.</td>
+            <td>—</td>
+        </tr>
+
+        </tbody>
+    </table>
+
+    <footer class="page-foot">
+        Audit baris-per-baris · <strong>script.js</strong> · kolom terakhir = lokasi implementasi di <code>index.html</code>.
+    </footer>
+</div>
+</body>
+</html>

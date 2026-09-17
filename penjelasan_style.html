@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy"
+      content="default-src 'none'; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none';">
+<meta name="referrer" content="no-referrer">
+<title>Audit Baris — style.css</title>
+<style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+        font-family: "Segoe UI", system-ui, -apple-system, Arial, sans-serif;
+        background: #071622; color: #eaf6fb; line-height: 1.55;
+        padding: 32px 18px 80px;
+    }
+    .wrap { max-width: 1220px; margin: 0 auto; }
+    header.page-head {
+        margin-bottom: 22px; padding: 22px 24px;
+        background: rgba(255,255,255,.045);
+        border: 1px solid rgba(255,255,255,.12);
+        border-radius: 16px;
+    }
+    header.page-head h1 { font-size: 1.35rem; margin-bottom: 6px; color: #fff; }
+    header.page-head p  { color: #9db4c0; font-size: .88rem; }
+    table {
+        width: 100%; border-collapse: collapse;
+        background: rgba(255,255,255,.03);
+        border: 1px solid rgba(255,255,255,.1);
+        border-radius: 14px; overflow: hidden;
+        font-size: .84rem;
+    }
+    thead th {
+        background: linear-gradient(135deg, #0B4F6C, #103a52);
+        color: #fff; text-align: left; padding: 12px 14px;
+        font-size: .76rem; letter-spacing: .05em;
+        text-transform: uppercase;
+        border-bottom: 1px solid rgba(255,255,255,.15);
+        position: sticky; top: 0; z-index: 5;
+    }
+    thead th:nth-child(1) { width: 88px; text-align: center; }
+    thead th:nth-child(2) { width: 34%; }
+    thead th:nth-child(4) { width: 14%; }
+    tbody tr { border-bottom: 1px solid rgba(255,255,255,.06); transition: background .18s; }
+    tbody tr:hover { background: rgba(56,189,248,.07); }
+    tbody tr:last-child { border-bottom: none; }
+    tbody td { padding: 11px 14px; vertical-align: top; }
+    tbody td:first-child {
+        text-align: center; color: #38bdf8; font-weight: 700;
+        font-variant-numeric: tabular-nums;
+        background: rgba(56,189,248,.05);
+    }
+    tbody td:nth-child(4) {
+        color: #fbbf24; font-weight: 600;
+        font-size: .8rem;
+        border-left: 1px dashed rgba(251,191,36,.2);
+    }
+    code {
+        font-family: "Fira Code", "Consolas", "Courier New", monospace;
+        font-size: .78rem; color: #f1f7fa;
+        background: rgba(0,0,0,.35); padding: 2px 6px;
+        border-radius: 5px; white-space: pre-wrap;
+        word-break: break-word; display: inline-block;
+        max-width: 100%;
+    }
+    td.desc { color: #cfe3ec; font-size: .83rem; }
+    td.desc b { color: #fff; }
+    td.desc .sec {
+        display: inline-block; font-size: .66rem; padding: 2px 9px;
+        margin-right: 6px; border-radius: 999px;
+        background: rgba(34,211,238,.16); color: #67e8f9;
+        font-weight: 600; letter-spacing: .03em;
+    }
+    td.desc .sec.warn { background: rgba(248,113,113,.16); color: #fca5a5; }
+    td.desc .sec.ok   { background: rgba(74,222,128,.16);  color: #86efac; }
+    .section-row td {
+        background: linear-gradient(90deg, rgba(56,189,248,.22), rgba(56,189,248,.04));
+        color: #fff; font-weight: 700; font-size: .78rem;
+        letter-spacing: .07em; text-transform: uppercase;
+        padding: 9px 14px;
+    }
+    footer.page-foot {
+        margin-top: 30px; padding: 18px 22px;
+        background: rgba(255,255,255,.04);
+        border: 1px solid rgba(255,255,255,.1);
+        border-radius: 14px; color: #9db4c0;
+        font-size: .82rem; text-align: center;
+    }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+    <header class="page-head">
+        <h1>🔐 Audit Baris — <code style="font-size:.95rem;">style.css</code></h1>
+        <p>Penjelasan blok/baris CSS beserta aspek keamanan visual (anti-overflow, anti-injeksi CSS, aksesibilitas warna &amp; gerak).</p>
+    </header>
+
+    <table>
+        <thead>
+            <tr>
+                <th>No Baris</th>
+                <th>Baris Kode CSS</th>
+                <th>Penjelasan &amp; Aspek Security</th>
+                <th>Keterkaitan</th>
+            </tr>
+        </thead>
+        <tbody>
+
+        <tr class="section-row"><td colspan="4">§ Header Komentar Keamanan</td></tr>
+
+        <tr>
+            <td>1–9</td>
+            <td><code>/* SECURITY NOTES (CSS): Tidak ada @import eksternal, url() luar origin, expression(), behavior(); selector dijaga; gunakan :where() */</code></td>
+            <td class="desc"><span class="sec warn">🛡️ CSS Injection Policy</span>Dokumentasi aturan hardening: tanpa <code>@import</code> eksternal, tanpa <code>url()</code> cross-origin, tanpa <code>expression()</code>/<code>behavior</code> legacy yang bisa jadi vektor XSS.</td>
+            <td>—</td>
+        </tr>
+
+        <tr class="section-row"><td colspan="4">§ Reset &amp; Design Token</td></tr>
+
+        <tr>
+            <td>11</td>
+            <td><code>*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }</code></td>
+            <td class="desc"><span class="sec">🎨 UI</span>Reset universal. <code>border-box</code> mencegah layout drift saat elemen diberi padding/border.</td>
+            <td>Seluruh elemen di index.html</td>
+        </tr>
+        <tr>
+            <td>13–24</td>
+            <td><code>:root { --brand: ...; --accent: ...; --text: ...; --radius: 18px; --danger: #f87171; }</code></td>
+            <td class="desc"><span class="sec">🔒 Isolation</span>Design token via CSS custom properties. Jika injeksi CSS terjadi, custom property ter-scope ke <code>:root</code> dan mudah di-audit.</td>
+            <td>Dipakai di seluruh stylesheet</td>
+        </tr>
+
+        <tr class="section-row"><td colspan="4">§ Body &amp; Background Bergerak</td></tr>
+
+        <tr>
+            <td>28–45</td>
+            <td><code>body { min-height: 100vh; ...; -webkit-tap-highlight-color: transparent; }</code></td>
+            <td class="desc"><span class="sec">🎨 UI</span>Layout root. <code>overflow-x: hidden</code> mencegah horizontal scroll akibat orb absolut.</td>
+            <td>→ <code>&lt;body&gt;</code> index.html baris 66</td>
+        </tr>
+        <tr>
+            <td>47–64</td>
+            <td><code>body::before { ...background: radial-gradient(...); animation: bgShift ...; pointer-events: none; }</code></td>
+            <td class="desc"><span class="sec">🛡️ Interaction Guard</span><code>pointer-events: none</code> — lapisan background tidak menghalangi klik form/input.</td>
+            <td>Background dekoratif di index.html</td>
+        </tr>
+        <tr>
+            <td>66–69</td>
+            <td><code>@keyframes bgShift { 0% { ... } 100% { ... } }</code></td>
+            <td class="desc"><span class="sec">🎨 UI</span>Animasi gradient bergerak — memberi kesan dinamis tanpa JS.</td>
+            <td>—</td>
+        </tr>
+        <tr>
+            <td>71–88</td>
+            <td><code>.orb { pointer-events: none; user-select: none; }<br>.orb.a/.b/.c { ...animation: floatA/B/C... }<br>@keyframes floatA/B/C { ... }</code></td>
+            <td class="desc"><span class="sec warn">🛡️ Decoration Hardening</span><code>pointer-events:none</code> + <code>user-select:none</code> — orb dekoratif tidak bisa diklik atau diblok. Tidak menyimpan data.</td>
+            <td>→ <code>&lt;div class="orb a/b/c"&gt;</code> index.html baris 69–71</td>
+        </tr>
+
+        <tr class="section-row"><td colspan="4">§ Layout Utama</td></tr>
+
+        <tr>
+            <td>93–103</td>
+            <td><code>.app { max-width: 580px; display: grid; gap: 18px; z-index: 1; }</code></td>
+            <td class="desc"><span class="sec">🎨 UI</span>Kontainer utama dengan z-index di atas orb.</td>
+            <td>→ <code>&lt;main class="app"&gt;</code> index.html baris 73</td>
+        </tr>
+        <tr>
+            <td>105–116</td>
+            <td><code>.card { background: var(--glass); border: 1px solid var(--stroke); backdrop-filter: blur(14px); animation: cardIn ...; }</code></td>
+            <td class="desc"><span class="sec">🎨 UI</span>Kartu kaca + animasi masuk. <code>box-shadow</code> + <code>inset</code> untuk kedalaman.</td>
+            <td>→ <code>.card</code> pada header &amp; section index.html (b.76, b.87)</td>
+        </tr>
+
+        <tr class="section-row"><td colspan="4">§ Header Identitas</td></tr>
+
+        <tr>
+            <td>124–142</td>
+            <td><code>.header-info h1::before { ... animation: pulseDot ...; }</code></td>
+            <td class="desc"><span class="sec">🎨 UI</span>Titik berdenyut sebagai aksen visual.</td>
+            <td>→ <code>&lt;header class="header-info"&gt;</code> index.html baris 76–84</td>
+        </tr>
+        <tr>
+            <td>144–157</td>
+            <td><code>.id-grid { list-style: none; display: grid; gap: 8px; }<br>.id-grid li { ... border-bottom: 1px dashed ...; }</code></td>
+            <td class="desc"><span class="sec">🎨 UI</span>Grid identitas. Border putus-putus sebagai pemisah.</td>
+            <td>→ <code>&lt;ul class="id-grid"&gt;</code> index.html baris 78–83</td>
+        </tr>
+
+        <tr class="section-row"><td colspan="4">§ Search Card</td></tr>
+
+        <tr>
+            <td>162–174</td>
+            <td><code>.subtitle code { background: rgba(56,189,248,.14); color: var(--accent); }</code></td>
+            <td class="desc"><span class="sec">🎨 UI</span>Styling tag <code>&lt;code&gt;</code> dalam subtitle.</td>
+            <td>→ <code>&lt;code&gt;</code> di index.html baris 90–91</td>
+        </tr>
+        <tr>
+            <td>177–186</td>
+            <td><code>.input-wrap { position: relative; display: flex; align-items: center; }</code></td>
+            <td class="desc"><span class="sec">🎨 UI</span>Posisi relatif — memungkinkan ikon &amp; tombol clear absolut.</td>
+            <td>→ <code>&lt;div class="input-wrap"&gt;</code> index.html baris 94</td>
+        </tr>
+        <tr>
+            <td>188–203</td>
+            <td><code>.search-icon { position: absolute; pointer-events: none; user-select: none; transition: ...; }</code></td>
+            <td class="desc"><span class="sec warn">🛡️ Interaction Guard</span><code>pointer-events: none</code> — ikon tidak menghalangi klik input. <code>user-select: none</code> — cegah seleksi tak sengaja.</td>
+            <td>→ <code>&lt;span class="search-icon"&gt;</code> index.html baris 95</td>
+        </tr>
+        <tr>
+            <td>205–228</td>
+            <td><code>#search-input { ... outline: none; }<br>#search-input:focus { border-color: var(--accent); box-shadow: 0 0 0 4px ...; }</code></td>
+            <td class="desc"><span class="sec">♿ A11y</span><code>outline: none</code> diimbangi <code>:focus</code> box-shadow tebal agar tetap terlihat jelas oleh pengguna keyboard.</td>
+            <td>→ <code>&lt;input id="search-input"&gt;</code> index.html baris 105–124</td>
+        </tr>
+        <tr>
+            <td>230–235</td>
+            <td><code>#search-input:invalid:not(:placeholder-shown) { border-color: var(--danger); box-shadow: 0 0 0 3px rgba(248,113,113,.18); }</code></td>
+            <td class="desc"><span class="sec warn">🛡️ Visual Feedback</span>Menampilkan state invalid dari atribut <code>pattern</code> HTML — user dapat feedback langsung.</td>
+            <td>→ <code>pattern</code> di index.html baris 118</td>
+        </tr>
+        <tr>
+            <td>237–243</td>
+            <td><code>.input-wrap:focus-within .search-icon { opacity: 1; transform: scale(1.18) rotate(-10deg); }</code></td>
+            <td class="desc"><span class="sec">🎨 UI</span>Efek mikro-interaksi — ikon berubah saat input fokus.</td>
+            <td>→ <code>.search-icon</code> index.html baris 95</td>
+        </tr>
+        <tr>
+            <td>245–270</td>
+            <td><code>.clear-btn { ... opacity: 0; transform: scale(.4); pointer-events: none; }<br>.clear-btn.visible { opacity: 1; pointer-events: auto; }<br>.clear-btn:focus-visible { outline: 2px solid var(--accent); }</code></td>
+            <td class="desc"><span class="sec">♿ A11y</span><code>pointer-events: none</code> saat hidden — mencegah klik pada elemen tak terlihat. <code>:focus-visible</code> untuk keyboard.</td>
+            <td>→ <code>&lt;button id="clear-btn"&gt;</code> index.html baris 125</td>
+        </tr>
+        <tr>
+            <td>272–297</td>
+            <td><code>.chips { display: flex; flex-wrap: wrap; gap: 8px; }<br>.chip { ... transition: ...; }<br>.chip:hover { transform: translateY(-3px); }<br>.chip:focus-visible { outline: 2px solid var(--accent); }</code></td>
+            <td class="desc"><span class="sec">♿ A11y</span>Chip responsif (wrap), hover &amp; focus state jelas untuk aksesibilitas.</td>
+            <td>→ <code>&lt;div class="chips" id="chips"&gt;</code> index.html baris 129</td>
+        </tr>
+        <tr>
+            <td>299–316</td>
+            <td><code>.meta-row { display: flex; justify-content: space-between; }<br>.count.pop { animation: pop ...; }<br>@keyframes pop { ... }</code></td>
+            <td class="desc"><span class="sec">🎨 UI</span>Counter dengan animasi <code>pop</code> yang di-trigger JS via classList.</td>
+            <td>→ <code>#result-count</code> index.html baris 132; trigger di script.js b.273–275</td>
+        </tr>
+
+        <tr class="section-row"><td colspan="4">§ Daftar User (List)</td></tr>
+
+        <tr>
+            <td>321–341</td>
+            <td><code>#user-list { list-style: none; max-height: 340px; overflow-y: auto; scrollbar-gutter: stable; }<br>#user-list::-webkit-scrollbar-thumb { background: rgba(56,189,248,.28); }</code></td>
+            <td class="desc"><span class="sec">🎨 UI</span>Scrollable list dengan custom scrollbar. <code>scrollbar-gutter: stable</code> mencegah layout shift.</td>
+            <td>→ <code>&lt;ul id="user-list"&gt;</code> index.html baris 137</td>
+        </tr>
+        <tr>
+            <td>343–382</td>
+            <td><code>.user-item { ... user-select: none; -webkit-user-drag: none; }<br>@keyframes itemIn { from { opacity: 0; translate: 0 12px; } }<br>.user-item:hover { transform: translateX(5px); }<br>.user-item:focus-visible { outline: 2px solid var(--accent); }</code></td>
+            <td class="desc"><span class="sec warn">🛡️ Interaction Hardening</span><code>user-select: none</code> cegah seleksi tak sengaja; <code>-webkit-user-drag: none</code> cegah drag abuse. Animasi masuk &amp; hover. <code>translate</code> properti terpisah agar tidak bentrok dengan hover <code>transform</code>.</td>
+            <td>→ <code>&lt;li class="user-item"&gt;</code> di dalam <code>#user-list</code>, dibuat script.js b.221–267</td>
+        </tr>
+        <tr>
+            <td>384–400</td>
+            <td><code>.avatar { ... background: linear-gradient(135deg, hsl(var(--hue, 200)...)); user-select: none; }</code></td>
+            <td class="desc"><span class="sec warn">🛡️ Safe CSS Var</span>Nilai <code>--hue</code> di-set dari JS via <code>setProperty</code> dengan angka 0–359 — tidak bisa jadi vektor injeksi CSS (fallback <code>200</code> bila tidak di-set).</td>
+            <td>→ Avatar dibuat script.js b.231–235</td>
+        </tr>
+        <tr>
+            <td>402–415</td>
+            <td><code>.user-name { word-break: break-word; overflow-wrap: anywhere; hyphens: auto; }<br>.user-role { word-break: break-word; overflow-wrap: anywhere; }</code></td>
+            <td class="desc"><span class="sec warn">🛡️ Anti Layout-Break</span>String panjang (nama atau payload) tidak bisa merusak layout. <code>overflow-wrap: anywhere</code> memecah tanpa peduli spasi.</td>
+            <td>→ Dirender script.js b.237–246</td>
+        </tr>
+        <tr>
+            <td>417–429</td>
+            <td><code>mark.hl { background: linear-gradient(90deg, rgba(250,204,21,.95), rgba(56,189,248,.95)); ...; box-decoration-break: clone; }</code></td>
+            <td class="desc"><span class="sec">🎨 UI</span>Highlight keyword. <code>box-decoration-break: clone</code> menjaga border-radius pada setiap baris.</td>
+            <td>→ Dibuat script.js b.114–116 (via <code>document.createElement("mark")</code>)</td>
+        </tr>
+
+        <tr class="section-row"><td colspan="4">§ Empty State</td></tr>
+
+        <tr>
+            <td>431–455</td>
+            <td><code>.no-result { text-align: center; padding: 26px 14px; border: 1px dashed ...; }<br>.no-result-icon { animation: bobble ...; user-select: none; }<br>@keyframes bobble { ... }</code></td>
+            <td class="desc"><span class="sec">🎨 UI</span>State kosong dengan ikon berayun. <code>user-select: none</code> pada ikon.</td>
+            <td>→ Dibuat script.js b.194–218</td>
+        </tr>
+
+        <tr class="section-row"><td colspan="4">§ Toast</td></tr>
+
+        <tr>
+            <td>457–475</td>
+            <td><code>.toast { position: fixed; transform: translate(-50%, 160%); opacity: 0; pointer-events: none; word-break: break-word; overflow-wrap: anywhere; }<br>.toast.show { transform: translate(-50%, 0); opacity: 1; }</code></td>
+            <td class="desc"><span class="sec warn">🛡️ + 🎨</span><code>pointer-events: none</code> saat hidden — toast tidak menghalangi klik. <code>overflow-wrap: anywhere</code> cegah pesan panjang merusak layout.</td>
+            <td>→ <code>&lt;div id="toast"&gt;</code> index.html baris 142</td>
+        </tr>
+
+        <tr class="section-row"><td colspan="4">§ Aksesibilitas Gerak</td></tr>
+
+        <tr>
+            <td>477–487</td>
+            <td><code>@media (prefers-reduced-motion: reduce) {<br>&nbsp;&nbsp;*, *::before, *::after {<br>&nbsp;&nbsp;&nbsp;&nbsp;animation-duration: .001ms !important;<br>&nbsp;&nbsp;&nbsp;&nbsp;transition-duration: .001ms !important;<br>&nbsp;&nbsp;}<br>}</code></td>
+            <td class="desc"><span class="sec">♿ A11y</span>Menghormati preferensi user yang sensitif terhadap gerak — mematikan hampir semua animasi secara otomatis.</td>
+            <td>Semua elemen beranimasi di index.html</td>
+        </tr>
+
+        </tbody>
+    </table>
+
+    <footer class="page-foot">
+        Audit baris-per-baris · <strong>style.css</strong> · Tanpa <code>@import</code> eksternal · Tanpa <code>url()</code> lintas-origin
+    </footer>
+</div>
+</body>
+</html>

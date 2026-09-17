@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy"
+      content="default-src 'none'; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none';">
+<meta name="referrer" content="no-referrer">
+<title>Audit Baris — index.html</title>
+<style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+        font-family: "Segoe UI", system-ui, -apple-system, Arial, sans-serif;
+        background: #071622; color: #eaf6fb; line-height: 1.55;
+        padding: 32px 18px 80px;
+    }
+    .wrap { max-width: 1220px; margin: 0 auto; }
+    header.page-head {
+        margin-bottom: 22px; padding: 22px 24px;
+        background: rgba(255,255,255,.045);
+        border: 1px solid rgba(255,255,255,.12);
+        border-radius: 16px;
+    }
+    header.page-head h1 { font-size: 1.35rem; margin-bottom: 6px; color: #fff; }
+    header.page-head p  { color: #9db4c0; font-size: .88rem; }
+    table {
+        width: 100%; border-collapse: collapse;
+        background: rgba(255,255,255,.03);
+        border: 1px solid rgba(255,255,255,.1);
+        border-radius: 14px; overflow: hidden;
+        font-size: .84rem;
+    }
+    thead th {
+        background: linear-gradient(135deg, #0B4F6C, #103a52);
+        color: #fff; text-align: left; padding: 12px 14px;
+        font-size: .76rem; letter-spacing: .05em;
+        text-transform: uppercase;
+        border-bottom: 1px solid rgba(255,255,255,.15);
+        position: sticky; top: 0; z-index: 5;
+    }
+    thead th:nth-child(1) { width: 72px; text-align: center; }
+    thead th:nth-child(2) { width: 40%; }
+    thead th:nth-child(3) { width: 14%; }
+    tbody tr { border-bottom: 1px solid rgba(255,255,255,.06); transition: background .18s; }
+    tbody tr:hover { background: rgba(56,189,248,.07); }
+    tbody tr:last-child { border-bottom: none; }
+    tbody td { padding: 11px 14px; vertical-align: top; }
+    tbody td:first-child {
+        text-align: center; color: #38bdf8; font-weight: 700;
+        font-variant-numeric: tabular-nums;
+        background: rgba(56,189,248,.05);
+    }
+    code {
+        font-family: "Fira Code", "Consolas", "Courier New", monospace;
+        font-size: .78rem; color: #f1f7fa;
+        background: rgba(0,0,0,.35); padding: 2px 6px;
+        border-radius: 5px; white-space: pre-wrap;
+        word-break: break-word; display: inline-block;
+        max-width: 100%;
+    }
+    td.desc { color: #cfe3ec; font-size: .83rem; }
+    td.desc b { color: #fff; }
+    td.desc .sec {
+        display: inline-block; font-size: .66rem; padding: 2px 9px;
+        margin-right: 6px; border-radius: 999px;
+        background: rgba(34,211,238,.16); color: #67e8f9;
+        font-weight: 600; letter-spacing: .03em;
+    }
+    td.desc .sec.warn { background: rgba(248,113,113,.16); color: #fca5a5; }
+    td.desc .sec.ok   { background: rgba(74,222,128,.16);  color: #86efac; }
+    .section-row td {
+        background: linear-gradient(90deg, rgba(56,189,248,.22), rgba(56,189,248,.04));
+        color: #fff; font-weight: 700; font-size: .78rem;
+        letter-spacing: .07em; text-transform: uppercase;
+        padding: 9px 14px;
+    }
+    .tag-src {
+        font-size: .68rem; padding: 3px 8px; border-radius: 6px;
+        background: rgba(251,191,36,.14); color: #fbbf24;
+        font-weight: 600; letter-spacing: .02em;
+    }
+    footer.page-foot {
+        margin-top: 30px; padding: 18px 22px;
+        background: rgba(255,255,255,.04);
+        border: 1px solid rgba(255,255,255,.1);
+        border-radius: 14px; color: #9db4c0;
+        font-size: .82rem; text-align: center;
+    }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+    <header class="page-head">
+        <h1>🔐 Audit Baris — <code style="font-size:.95rem;">index.html</code></h1>
+        <p>Penjelasan setiap baris &amp; blok, lengkap dengan aspek keamanan.
+           Kolom kanan menunjukkan keterkaitan dengan <code>style.css</code> atau <code>script.js</code>.</p>
+    </header>
+
+    <table>
+        <thead>
+            <tr>
+                <th>No Baris</th>
+                <th>Baris Kode HTML</th>
+                <th>Penjelasan &amp; Aspek Security</th>
+                <th>Keterkaitan</th>
+            </tr>
+        </thead>
+        <tbody>
+
+        <tr class="section-row"><td colspan="4">§ Blok Pembuka &amp; Meta Keamanan</td></tr>
+
+        <tr>
+            <td>1</td>
+            <td><code>&lt;!DOCTYPE html&gt;</code></td>
+            <td class="desc">Deklarasi HTML5 — memastikan browser memakai mode standar (bukan quirks mode yang bisa memicu bug parsing).</td>
+            <td>—</td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td><code>&lt;html lang="id"&gt;</code></td>
+            <td class="desc"><span class="sec">♿ A11y</span>Atribut <code>lang</code> untuk screen reader &amp; SEO.</td>
+            <td>—</td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td><code>&lt;head&gt;</code></td>
+            <td class="desc">Awal blok metadata.</td>
+            <td>—</td>
+        </tr>
+        <tr>
+            <td>4</td>
+            <td><code>&lt;meta charset="UTF-8"&gt;</code></td>
+            <td class="desc"><span class="sec warn">🛡️ Encoding</span>Mencegah <b>UTF-7 XSS</b> dan mojibake. Wajib diletakkan paling awal di <code>&lt;head&gt;</code>.</td>
+            <td>—</td>
+        </tr>
+        <tr>
+            <td>5</td>
+            <td><code>&lt;meta name="viewport" ...&gt;</code></td>
+            <td class="desc"><span class="sec">🎨 UI</span>Responsif — tidak mengunci zoom (aksesibilitas).</td>
+            <td>Dipakai media query di style.css</td>
+        </tr>
+        <tr>
+            <td>11–29</td>
+            <td><code>&lt;meta http-equiv="Content-Security-Policy" content="
+                default-src 'none'; script-src 'self'; style-src 'self';
+                img-src 'self' data:; connect-src 'none'; object-src 'none';
+                frame-ancestors 'none'; base-uri 'none'; form-action 'none';
+                worker-src 'none'; upgrade-insecure-requests; ..."&gt;</code></td>
+            <td class="desc"><span class="sec warn">🛡️ CSP</span><b>Lapisan keamanan utama.</b> Default <code>'none'</code> lalu whitelist ketat. Mencegah XSS, clickjacking, mixed-content, dan eksekusi resource eksternal.</td>
+            <td>Mengizinkan <code>style.css</code> &amp; <code>script.js</code> lokal</td>
+        </tr>
+        <tr>
+            <td>32</td>
+            <td><code>&lt;meta name="referrer" content="no-referrer"&gt;</code></td>
+            <td class="desc"><span class="sec">🔒 Privacy</span>Cegah kebocoran URL/referrer ke situs eksternal.</td>
+            <td>—</td>
+        </tr>
+        <tr>
+            <td>35</td>
+            <td><code>&lt;meta http-equiv="X-Content-Type-Options" content="nosniff"&gt;</code></td>
+            <td class="desc"><span class="sec warn">🛡️ MIME Sniffing</span>Mencegah browser menebak tipe file (mis. file teks dieksekusi sebagai skrip).</td>
+            <td>—</td>
+        </tr>
+        <tr>
+            <td>38</td>
+            <td><code>&lt;meta http-equiv="X-Frame-Options" content="DENY"&gt;</code></td>
+            <td class="desc"><span class="sec warn">🛡️ Clickjacking</span>Fallback bila CSP tidak didukung — melarang halaman di-<i>frame</i>.</td>
+            <td>—</td>
+        </tr>
+        <tr>
+            <td>41</td>
+            <td><code>&lt;meta http-equiv="X-XSS-Protection" content="0"&gt;</code></td>
+            <td class="desc"><span class="sec warn">🛡️ XSS</span>Menonaktifkan XSS auditor legacy yang justru bisa memicu bug (rekomendasi OWASP).</td>
+            <td>—</td>
+        </tr>
+        <tr>
+            <td>44–57</td>
+            <td><code>&lt;meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), ..."&gt;</code></td>
+            <td class="desc"><span class="sec warn">🛡️ Feature Policy</span>Matikan API browser yang tidak dibutuhkan — kurangi attack surface.</td>
+            <td>—</td>
+        </tr>
+        <tr>
+            <td>59</td>
+            <td><code>&lt;meta name="color-scheme" content="dark"&gt;</code></td>
+            <td class="desc"><span class="sec">🎨 UI</span>Memberi tahu browser bahwa halaman didesain gelap.</td>
+            <td>—</td>
+        </tr>
+        <tr>
+            <td>60</td>
+            <td><code>&lt;meta name="robots" content="noindex, nofollow, noarchive"&gt;</code></td>
+            <td class="desc"><span class="sec">🔒 Privacy</span>Halaman demo tidak diindeks mesin pencari.</td>
+            <td>—</td>
+        </tr>
+        <tr>
+            <td>61</td>
+            <td><code>&lt;title&gt;Secure Live Search — Dimas Kurniawan&lt;/title&gt;</code></td>
+            <td class="desc">Judul tab. Tidak memakai karakter <code>&lt; &gt; &amp;</code> — cegah parsing aneh.</td>
+            <td>—</td>
+        </tr>
+        <tr>
+            <td>64</td>
+            <td><code>&lt;link rel="stylesheet" href="style.css"&gt;</code></td>
+            <td class="desc"><span class="sec">🔒 Self-hosted</span>Stylesheet lokal — sesuai CSP <code>style-src 'self'</code>.</td>
+            <td>→ <code>style.css</code></td>
+        </tr>
+        <tr>
+            <td>65</td>
+            <td><code>&lt;/head&gt;</code></td>
+            <td class="desc">Penutup head.</td>
+            <td>—</td>
+        </tr>
+        <tr>
+            <td>66</td>
+            <td><code>&lt;body&gt;</code></td>
+            <td class="desc">Awal body — konten visual.</td>
+            <td>—</td>
+        </tr>
+
+        <tr class="section-row"><td colspan="4">§ Ornamen Background Bergerak</td></tr>
+
+        <tr>
+            <td>69–71</td>
+            <td><code>&lt;div class="orb a" aria-hidden="true"&gt;&lt;/div&gt;<br>&lt;div class="orb b" aria-hidden="true"&gt;&lt;/div&gt;<br>&lt;div class="orb c" aria-hidden="true"&gt;&lt;/div&gt;</code></td>
+            <td class="desc"><span class="sec">♿ A11y + 🎨 UI</span><code>aria-hidden="true"</code> = tidak dibaca screen reader. Ornamen dekoratif saja — tidak menyimpan data.</td>
+            <td>→ <code>.orb</code>, <code>.orb.a/b/c</code> di style.css (animasi <code>floatA/B/C</code>)</td>
+        </tr>
+
+        <tr class="section-row"><td colspan="4">§ Struktur Utama &amp; Header Identitas</td></tr>
+
+        <tr>
+            <td>73</td>
+            <td><code>&lt;main class="app"&gt;</code></td>
+            <td class="desc">Landmark semantik <code>&lt;main&gt;</code> — membantu navigasi screen reader.</td>
+            <td>→ <code>.app</code> di style.css</td>
+        </tr>
+        <tr>
+            <td>76–84</td>
+            <td><code>&lt;header class="card header-info"&gt;<br>&nbsp;&nbsp;&lt;h1&gt;Detail Tugas...&lt;/h1&gt;<br>&nbsp;&nbsp;&lt;ul class="id-grid"&gt;...&lt;/ul&gt;<br>&lt;/header&gt;</code></td>
+            <td class="desc"><span class="sec">🎨 UI</span>Kartu identitas. Tidak ada <code>innerHTML</code> dari JS — murni statis, tidak bisa dimodifikasi runtime.</td>
+            <td>→ <code>.card</code>, <code>.header-info</code>, <code>.id-grid</code> di style.css</td>
+        </tr>
+
+        <tr class="section-row"><td colspan="4">§ Kartu Live Search</td></tr>
+
+        <tr>
+            <td>87</td>
+            <td><code>&lt;section class="card search-card"&gt;</code></td>
+            <td class="desc">Landmark <code>&lt;section&gt;</code> — memperjelas struktur dokumen.</td>
+            <td>→ <code>.search-card</code> di style.css</td>
+        </tr>
+        <tr>
+            <td>94</td>
+            <td><code>&lt;div class="input-wrap"&gt;</code></td>
+            <td class="desc">Wrapper posisi relatif untuk ikon &amp; clear button.</td>
+            <td>→ <code>.input-wrap</code> di style.css</td>
+        </tr>
+        <tr>
+            <td>95</td>
+            <td><code>&lt;span class="search-icon" aria-hidden="true"&gt;🔍&lt;/span&gt;</code></td>
+            <td class="desc">Ikon dekoratif — <code>aria-hidden</code> agar tidak dibaca screen reader.</td>
+            <td>→ <code>.search-icon</code> di style.css</td>
+        </tr>
+        <tr>
+            <td>105–124</td>
+            <td><code>&lt;input type="text" id="search-input" name="q" ... &gt;</code></td>
+            <td class="desc"><span class="sec warn">🛡️ Hardened Input</span>Lengkap:<br>• <code>maxlength="50"</code> — cap panjang<br>• <code>pattern</code> — whitelist karakter<br>• <code>inputmode="text"</code> — paksa keyboard<br>• <code>autocomplete/autocorrect/autocapitalize off</code> — cegah data leak &amp; input aneh<br>• <code>spellcheck="false"</code> — cegah kirim data ke spellchecker eksternal<br>• <code>aria-*</code> — aksesibilitas<br>• <code>enterkeyhint</code> — UX mobile</td>
+            <td>→ Diambil oleh <code>script.js</code> baris 161; event di baris 346 &amp; 358</td>
+        </tr>
+        <tr>
+            <td>125</td>
+            <td><code>&lt;button type="button" id="clear-btn" class="clear-btn" aria-label="Bersihkan pencarian"&gt;✕&lt;/button&gt;</code></td>
+            <td class="desc"><span class="sec warn">🛡️ Hardened Button</span><code>type="button"</code> cegah form-submit tak sengaja. <code>aria-label</code> untuk screen reader.</td>
+            <td>→ <code>script.js</code> baris 162 (getEl) &amp; 384 (listener)</td>
+        </tr>
+        <tr>
+            <td>129</td>
+            <td><code>&lt;div class="chips" id="chips" role="group" aria-label="Saran pencarian"&gt;&lt;/div&gt;</code></td>
+            <td class="desc"><code>role="group"</code> — mengelompokkan tombol saran untuk screen reader. Kosong — diisi JS via <code>createElement</code>.</td>
+            <td>→ <code>script.js</code> baris 165 &amp; 390–402</td>
+        </tr>
+        <tr>
+            <td>132</td>
+            <td><code>&lt;span id="result-count" class="count" aria-live="polite"&gt;&lt;/span&gt;</code></td>
+            <td class="desc"><span class="sec">♿ A11y</span><code>aria-live="polite"</code> — screen reader otomatis membacakan perubahan counter.</td>
+            <td>→ <code>script.js</code> baris 269–271</td>
+        </tr>
+        <tr>
+            <td>133</td>
+            <td><code>&lt;span id="query-hint" class="hint"&gt;&lt;/span&gt;</code></td>
+            <td class="desc">Elemen hint kata kunci. Tidak <code>aria-live</code> untuk menghindari redundansi.</td>
+            <td>→ <code>script.js</code> baris 277–279</td>
+        </tr>
+        <tr>
+            <td>137</td>
+            <td><code>&lt;ul id="user-list" role="listbox" aria-live="polite" aria-label="Hasil pencarian pengguna"&gt;&lt;/ul&gt;</code></td>
+            <td class="desc"><span class="sec warn">🛡️ + ♿</span><code>role="listbox"</code> memungkinkan navigasi keyboard. <code>aria-live</code> umumkan perubahan. Kosong — diisi JS via <code>createElement</code>.</td>
+            <td>→ <code>script.js</code> baris 163 &amp; render di 188</td>
+        </tr>
+        <tr>
+            <td>138</td>
+            <td><code>&lt;/section&gt;</code></td>
+            <td class="desc">Penutup section search.</td>
+            <td>—</td>
+        </tr>
+        <tr>
+            <td>139</td>
+            <td><code>&lt;/main&gt;</code></td>
+            <td class="desc">Penutup main.</td>
+            <td>—</td>
+        </tr>
+
+        <tr class="section-row"><td colspan="4">§ Toast &amp; Script</td></tr>
+
+        <tr>
+            <td>142</td>
+            <td><code>&lt;div id="toast" class="toast" role="status" aria-live="polite" aria-atomic="true"&gt;&lt;/div&gt;</code></td>
+            <td class="desc"><span class="sec">♿ A11y</span><code>role="status"</code> + <code>aria-atomic="true"</code> — screen reader membacakan pesan toast secara utuh.</td>
+            <td>→ <code>script.js</code> baris 166 &amp; 132–141</td>
+        </tr>
+        <tr>
+            <td>145–150</td>
+            <td><code>&lt;script src="script.js"<br>&nbsp;&nbsp;defer<br>&nbsp;&nbsp;referrerpolicy="no-referrer"<br>&nbsp;&nbsp;crossorigin="anonymous"&gt;&lt;/script&gt;</code></td>
+            <td class="desc"><span class="sec warn">🛡️ Hardened Script</span>• <code>defer</code> — tidak blocking, DOM sudah siap<br>• <code>referrerpolicy="no-referrer"</code> — cegah kebocoran URL<br>• <code>crossorigin="anonymous"</code> — aktifkan CORS check (SRI-ready)<br>• Tanpa inline script (patuh CSP)</td>
+            <td>→ <code>script.js</code> (seluruh file)</td>
+        </tr>
+        <tr>
+            <td>151–152</td>
+            <td><code>&lt;/body&gt;<br>&lt;/html&gt;</code></td>
+            <td class="desc">Penutup dokumen.</td>
+            <td>—</td>
+        </tr>
+
+        </tbody>
+    </table>
+
+    <footer class="page-foot">
+        Audit baris-per-baris · <strong>index.html</strong> · Total ≈ 152 baris · CSP <code>default-src 'none'</code>
+    </footer>
+</div>
+</body>
+</html>
