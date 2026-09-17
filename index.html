@@ -9,24 +9,49 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="search-container">
-        <h2>Live Search User List (Secure)</h2>
-        
-        <!-- Security: Hardening atribut input -->
-        <input 
-            type="text" 
-            id="search-input" 
-            placeholder="Cari nama pengguna..." 
-            autocomplete="off" 
-            autocorrect="off"
-            spellcheck="false"
-            maxlength="50" 
-            aria-label="Cari pengguna"
-        >
-        
-        <!-- Security/Accessibility: aria-live untuk mengabarkan perubahan secara aman -->
-        <ul id="user-list" aria-live="polite"></ul>
+    <div class="main-wrapper">
+        <!-- Header Identitas -->
+        <header class="header-info">
+            <h1>Detail Tugas & Identitas</h1>
+            <ul>
+                <li><strong>Nama:</strong> Dimas Kurniawan</li>
+                <li><strong>NIM:</strong> 25120300016</li>
+                <li><strong>Mata Kuliah:</strong> Web Application Development (WAD05)</li>
+                <li><strong>Dosen:</strong> Wahyu Ari Bowo</li>
+            </ul>
+        </header>
+
+        <!-- View Lampiran File -->
+        <section class="attachment-section">
+            <h3>Lampiran File:</h3>
+            <div class="attachment-card">
+                <span class="file-icon">📄</span>
+                <span class="file-name">Tugas_WAD05_16092026.docx</span>
+                <a href="Tugas_WAD05_16092026.docx" download class="download-btn">Unduh / Lihat</a>
+            </div>
+        </section>
+
+        <!-- Container Live Search -->
+        <div class="search-container">
+            <h2>Live Search User List (Secure)</h2>
+            
+            <!-- Security: Hardening atribut input -->
+            <input 
+                type="text" 
+                id="search-input" 
+                placeholder="Cari nama pengguna..." 
+                autocomplete="off" 
+                autocorrect="off"
+                spellcheck="false"
+                maxlength="50" 
+                aria-label="Cari pengguna"
+            >
+            
+            <!-- Security/Accessibility: aria-live untuk mengabarkan perubahan secara aman -->
+            <ul id="user-list" aria-live="polite"></ul>
+        </div>
     </div>
+
     <script src="script.js" defer></script>
 </body>
 </html>
