@@ -4,53 +4,98 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Security: Content Security Policy untuk mencegah eksekusi script tidak dikenal -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self';">
-    <title>Secure Live Search</title>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:;">
+    <title>Secure Live Search — Dimas Kurniawan</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="main-wrapper">
-        <!-- Header Identitas -->
+
+    <!-- ===== Latar animasi dekoratif (murni visual, tanpa interaksi) ===== -->
+    <div class="bg-decor" aria-hidden="true">
+        <span class="blob blob-1"></span>
+        <span class="blob blob-2"></span>
+        <span class="blob blob-3"></span>
+        <span class="blob blob-4"></span>
+        <span class="grid-overlay"></span>
+    </div>
+
+    <main class="main-wrapper">
+
+        <!-- ===== Header Identitas ===== -->
         <header class="header-info">
-            <h1>Detail Tugas & Identitas</h1>
-            <ul>
-                <li><strong>Nama:</strong> Dimas Kurniawan</li>
-                <li><strong>NIM:</strong> 25120300016</li>
-                <li><strong>Mata Kuliah:</strong> Web Application Development (WAD05)</li>
-                <li><strong>Dosen:</strong> Wahyu Ari Bowo</li>
-            </ul>
+            <div class="avatar" aria-hidden="true">DK</div>
+
+            <div class="identity">
+                <h1>Detail Tugas &amp; Identitas</h1>
+                <ul class="id-list">
+                    <li><strong>Nama</strong><span>Dimas Kurniawan</span></li>
+                    <li><strong>NIM</strong><span>25120300016</span></li>
+                    <li><strong>Matkul</strong><span>Web Application Development (WAD05)</span></li>
+                    <li><strong>Dosen</strong><span>Wahyu Ari Bowo</span></li>
+                </ul>
+            </div>
+
+            <button type="button" id="theme-toggle" class="theme-toggle"
+                    aria-label="Aktifkan tema gelap" aria-pressed="false">🌙</button>
         </header>
 
-        <!-- View Lampiran File -->
+        <!-- ===== Lampiran File ===== -->
         <section class="attachment-section">
-            <h3>Lampiran File:</h3>
+            <h3>Lampiran File</h3>
             <div class="attachment-card">
-                <span class="file-icon">📄</span>
+                <span class="file-icon" aria-hidden="true">📄</span>
                 <span class="file-name">Tugas_WAD05_16092026.docx</span>
-                <a href="Tugas_WAD05_16092026.docx" download class="download-btn">Unduh / Lihat</a>
+                <a href="Tugas_WAD05_16092026.docx" download class="download-btn">
+                    Unduh <span aria-hidden="true">↓</span>
+                </a>
             </div>
         </section>
 
-        <!-- Container Live Search -->
-        <div class="search-container">
-            <h2>Live Search User List (Secure)</h2>
-            
-            <!-- Security: Hardening atribut input -->
-            <input 
-                type="text" 
-                id="search-input" 
-                placeholder="Cari nama pengguna..." 
-                autocomplete="off" 
-                autocorrect="off"
-                spellcheck="false"
-                maxlength="50" 
-                aria-label="Cari pengguna"
-            >
-            
-            <!-- Security/Accessibility: aria-live untuk mengabarkan perubahan secara aman -->
-            <ul id="user-list" aria-live="polite"></ul>
-        </div>
-    </div>
+        <!-- ===== Live Search ===== -->
+        <section class="search-container">
+            <div class="search-head">
+                <h2>Live Search <span class="badge">Secure</span></h2>
+                <span class="counter" id="result-count" aria-hidden="true">0 hasil</span>
+            </div>
+
+            <div class="input-wrapper">
+                <span class="search-icon" aria-hidden="true">🔍</span>
+                <input
+                    type="text"
+                    id="search-input"
+                    placeholder="Cari nama pengguna..."
+                    autocomplete="off"
+                    autocorrect="off"
+                    spellcheck="false"
+                    maxlength="50"
+                    aria-label="Cari pengguna"
+                    role="combobox"
+                    aria-expanded="true"
+                    aria-controls="user-list"
+                    aria-autocomplete="list"
+                >
+                <button type="button" id="clear-btn" class="clear-btn"
+                        aria-label="Bersihkan pencarian">✕</button>
+            </div>
+
+            <!-- Quick filter huruf awal (dibuat aman via DOM API) -->
+            <div class="chips" id="chips" role="group" aria-label="Filter huruf awal"></div>
+
+            <ul id="user-list" role="listbox" aria-label="Daftar pengguna"></ul>
+
+            <!-- Pengumuman hasil untuk screen reader -->
+            <p class="sr-only" id="sr-status" role="status" aria-live="polite"></p>
+
+            <p class="hint">
+                <span><kbd>↑</kbd><kbd>↓</kbd> navigasi</span>
+                <span><kbd>Enter</kbd> pilih</span>
+                <span><kbd>Esc</kbd> reset</span>
+            </p>
+        </section>
+
+    </main>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
     <script src="script.js" defer></script>
 </body>
